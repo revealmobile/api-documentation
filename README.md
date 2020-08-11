@@ -8,7 +8,16 @@
 - `Campaign`: logical grouping of 1 or more mobile device audiences created in VISIT Local observed over a specific date range.
 - `Visitor`: unique device observed at a target location.
 - `Competitor`: locations that have been co-visited by Visitors of a Project.
+## Campaign Segments
+Campaign devices are grouped into four `Pre-Campaign Segments`:
+1. `Customers`: devices observed at a Project location in the Campaign Pre-Period
+2. `Competitors`: devices not observed at a Project location, but were observed at a Competitor location in the Campaign Pre-Period
+3. `NeverVisited`: devices not observed at a Project location nor observed at a Competitor location in the Campaign Pre-Period
+4. `AllConversions`: devices observed at either a Project or Competitor location.
 
+*The `Campaign Pre-Period` refers to the range of time `n` days leading up to a campaign, where `n` is the number of days since the Campaign start date.*
+
+Any one of the four `Pre-Campaign-Segments` can be further sub-segmented into  `Campaign Segments`. For example, devices in the Pre-Campaign `Customer` segment can be divided into Campaign Segments for AllConversions, Customers, Competitors, and NeverVisited based on visit observations during the Campaign.
 ## Index metric format
 Index value metrics allow a normalized comparison of visitation between two date ranges with fluctuating sample sizes.
 

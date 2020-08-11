@@ -216,7 +216,6 @@ paths:
 
         [Learn More About Campaign Segments](https://google.com)
 
-
         ## Output Formats
         * **Count**  - integer representation of the number of conversions in the Campaign report period.
         * **Percentage**  - double representation of the ratio of Segment Conversions to the total devices in a campaign.
