@@ -203,6 +203,63 @@ paths:
                   $ref: '#/definitions/Message'
         400:
           description: bad input parameter
+  /report/campaign/{campaign_id}/conversion:
+    get:
+      summary: Campaign Conversions
+      operationId: countConversions
+      description: |
+        ## Get the number of conversions for any Campaign Segment up until the most recent date of the Campaign.
+
+        Defaults to counting all conversions for Campaign devices, but can optionally specify a Pre-Campaign Segment to filter by.
+
+        If a Pre-Campaign Segment is selected, the count is returned for each Segment in the campaign period for devices that were in the selected Pre-Campaign Segment.
+
+        [Learn More About Campaign Segments](https://google.com)
+
+
+        ## Output Formats
+        * **Count**  - integer representation of the number of conversions in the Campaign report period.
+        * **Percentage**  - double representation of the ratio of Segment Conversions to the total devices in a campaign.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a **Session**
+        - in: path
+          name: campaign_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: segment
+          type: string
+          enum: [Customers, Competitors, NeverVisited]
+          required: false
+        - in: query
+          name: format
+          type: string
+          enum: [Count, Percentage]
+          required: false
+          default: Count
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example:  {"AllConversions":1.5676084690832772}
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
 definitions:
   BasicResponse:
     type: object
