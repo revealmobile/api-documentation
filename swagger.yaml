@@ -19,7 +19,7 @@ paths:
       summary: Create Session
       operationId: session
       description: |
-        Create an api session which is valid for 12 hours after creation. The token will be used in the **Authorization** header of all *GET* requests.
+        Create an api session token. The token will be used in the **Authorization** header of all *GET* requests. The token expires periodically at which time a new session token will need to be generated.
       produces:
         - application/json
       consumes:
@@ -64,7 +64,7 @@ paths:
         ### Output Formats
         * **Count** - An integer representation of unique Visitors matching the specified criteria.
         * **Percentage** - A double representation a percentage metric indicating the ratio of project visitors within a specified proximity of their Home or Work location to total project Visitors within the report period.
-        * **Index** - An double representation of index value comparison in unique Visitors
+        * **Index** - An double representation of index value comparison in unique Visitors. [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
       produces:
         - application/json
       parameters:
@@ -141,7 +141,7 @@ paths:
         * **Count** - An integer representation of the number of Visitors that visited the Project locations and one of the competitors locations within the report timeframe.
         * **Percentage** - A double representation of the ratio of Visitors that visited a competitor location to the total
         Project Visitors in the report timeframe.
-        * **Index** -
+        * **Index** - [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
       produces:
         - application/json
       parameters:
