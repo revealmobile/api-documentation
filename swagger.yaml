@@ -109,7 +109,7 @@ paths:
           name: distance
           type: integer
           format: int32
-          description: Includes visitors within the specified distance of a Visitor's Home or Work location.
+          description: Includes visitors within the specified distance (in miles) of a Visitor's Home or Work location.
         - in: query
           name: target
           type: string
