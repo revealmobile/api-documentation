@@ -55,7 +55,7 @@ paths:
       summary: Visitor Count Report
       operationId: countVisitors
       description: |
-        # Get a report of Visitors within a specified date range, to a specified [project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
+        # Get a report of Visitors within a specified date range, to a specified [Project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
 
         ### Optional Filters
         * **Repeat Visitors** - Visited Project locations more than 1x in report period.
@@ -70,6 +70,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          required: true
           type: string
           format: JWT
           description: a valid JWT token generated from creating a **Session**
@@ -147,6 +148,7 @@ paths:
       parameters:
         - in: header
           name: Authorization
+          required: true
           type: string
           format: JWT
           description: a valid JWT token generated from creating a **Session**
