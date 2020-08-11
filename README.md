@@ -8,6 +8,7 @@
 - `Campaign`: logical grouping of 1 or more mobile device audiences created in VISIT Local observed over a specific date range.
 - `Visitor`: unique device observed at a target location.
 - `Competitor`: locations that have been co-visited by Visitors of a Project.
+- `Conversion`: an observation of a device from a Campaign audience at a Project location during the Campaign report period.
 ## Campaign Segments
 Campaign devices are grouped into four `Pre-Campaign Segments`:
 1. `Customers`: devices observed at a Project location in the Campaign Pre-Period
