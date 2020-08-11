@@ -55,11 +55,11 @@ paths:
       summary: Visitor Count Report
       operationId: countVisitors
       description: |
-        # Get a report of Visitors within a specified date range, to a specified project.
+        # Get a report of Visitors within a specified date range, to a specified [project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
 
         ### Optional Filters
         * **Repeat Visitors** - Visited Project locations more than 1x in report period.
-        * **Target Visitors** - Visited project location that was situated within a specified proximity of the Visitor's recorded Home or Work location.
+        * **Target Visitors** - Visited Project location that was situated within a specified proximity of the Visitor's recorded Home or Work location.
 
         ### Output Formats
         * **Count** - An integer representation of unique Visitors matching the specified criteria.
