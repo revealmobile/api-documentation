@@ -199,6 +199,327 @@ paths:
                   $ref: '#/definitions/Message'
         400:
           description: bad input parameter
+  /project/{project_id}/place:
+    get:
+      summary: Project Places
+      operationId: findPlaces
+      description: |
+        ## Find places associated with a project.
+
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a **Session**
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: top
+          description: Find the top places by daily visitation.
+          type: boolean
+          default: false
+        - in: query
+          name: limit
+          description: The maximum number of places to return.
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: A basic response including place data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                  {
+                    "polygon_id": 49129973,
+                    "name": "Crate and Barrel",
+                    "location": {
+                      "type": "Point",
+                      "coordinates": [
+                        -88.34125271866186,
+                        41.89452255937315
+                      ]
+                    },
+                    "tags": [
+                    {
+                      "id": 0,
+                      "name": null,
+                      "organization_id": null
+                    }
+                    ],
+                    "enabled": true,
+                    "confidence": 50,
+                    "last_modified": null,
+                    "id": 2777983,
+                    "categories": [
+                      999392276222313773
+                    ],
+                    "last_verified": null,
+                    "organization_id": null,
+                    "address": {
+                      "city": "Geneva",
+                      "street_alternate": null,
+                      "state": "IL",
+                      "country": "USA",
+                      "postal_code": "60134",
+                      "street": "1102 Commons Dr"
+                    },
+                    "metadata_provider_id": 1,
+                    "external_key": "131627673",
+                    "chain_id": 1353143788750505856,
+                    "created": "2020-08-12T16:12:50.162",
+                    "master_id": null
+                  }
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/competitor/daily:
+    get:
+      summary: Project Visitation Compared to Top Competitors
+      operationId: calculateMarketShareByDay
+      description:  |
+        ## Calculate daily visitation index for this project and competitors.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a **Session**
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-01
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: limit
+          description: The number of competitors to be included in the report.
+          type: integer
+          format: int32
+          default: 5
+        - in: query
+          name: normalize
+          description: Apply the normalization multiplier.
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                  [
+                    "Piglet Inc",
+                    [
+                    [
+                      "2020-06-25",
+                      7.256916996047431
+                    ],
+                    [
+                      "2020-06-26",
+                      7.681818181818182
+                    ],
+                    [
+                      "2020-06-27",
+                      7.169960474308301
+                    ],
+                    [
+                      "2020-06-28",
+                      7.0810276679841895
+                    ],
+                    [
+                      "2020-06-29",
+                      6.958498023715415
+                    ],
+                    [
+                      "2020-06-30",
+                      6.944664031620554
+                    ]
+                    ]
+                  ],
+                  [
+                    "Kroger",
+                    [
+                    [
+                      "2020-06-25",
+                      14.370332996972754
+                    ],
+                    [
+                      "2020-06-26",
+                      15.906659939455096
+                    ],
+                    [
+                      "2020-06-27",
+                      15.99949545913219
+                    ],
+                    [
+                      "2020-06-28",
+                      15.927346115035318
+                    ],
+                    [
+                      "2020-06-29",
+                      14.136226034308779
+                    ],
+                    [
+                      "2020-06-30",
+                      14.178607467204843
+                    ]
+                    ]
+                  ],
+                  [
+                    "Publix Super Market",
+                    [
+                    [
+                      "2020-06-25",
+                      14.364963503649635
+                    ],
+                    [
+                      "2020-06-26",
+                      15.966423357664233
+                    ],
+                    [
+                      "2020-06-27",
+                      15.98978102189781
+                    ],
+                    [
+                      "2020-06-28",
+                      16.15985401459854
+                    ],
+                    [
+                      "2020-06-29",
+                      14.115328467153285
+                    ],
+                    [
+                      "2020-06-30",
+                      14.218978102189782
+                    ]
+                    ]
+                  ],
+                  [
+                    "Sam's Club",
+                    [
+                    [
+                      "2020-06-25",
+                      23.688741721854306
+                    ],
+                    [
+                      "2020-06-26",
+                      28.64569536423841
+                    ],
+                    [
+                      "2020-06-27",
+                      34.473509933774835
+                    ],
+                    [
+                      "2020-06-28",
+                      27.600993377483444
+                    ],
+                    [
+                      "2020-06-29",
+                      22.644039735099337
+                    ],
+                    [
+                      "2020-06-30",
+                      23.879139072847682
+                    ]
+                    ]
+                  ],
+                  [
+                    "Food Lion",
+                    [
+                    [
+                      "2020-06-25",
+                      5.70316186880604
+                    ],
+                    [
+                      "2020-06-26",
+                      5.863142991977348
+                    ],
+                    [
+                      "2020-06-27",
+                      6.466257668711656
+                    ],
+                    [
+                      "2020-06-28",
+                      6.015101462954224
+                    ],
+                    [
+                      "2020-06-29",
+                      5.621519584709769
+                    ],
+                    [
+                      "2020-06-30",
+                      5.561113732892874
+                    ]
+                    ]
+                  ],
+                  [
+                    "Winn-Dixie",
+                    [
+                    [
+                      "2020-06-25",
+                      6.292592592592593
+                    ],
+                    [
+                      "2020-06-26",
+                      7.062962962962963
+                    ],
+                    [
+                      "2020-06-27",
+                      7.225925925925926
+                    ],
+                    [
+                      "2020-06-28",
+                      6.796296296296297
+                    ],
+                    [
+                      "2020-06-29",
+                      6.366666666666666
+                    ],
+                    [
+                      "2020-06-30",
+                      6.25
+                    ]
+                    ]
+                  ]
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
   /report/campaign/{campaign_id}/conversion:
     get:
       summary: Campaign Conversions
