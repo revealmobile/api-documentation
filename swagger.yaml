@@ -260,7 +260,20 @@ paths:
     get:
       summary: Count Campaign Visitors By Location
       operationId: countCampaignVisitorsByLocation
-      description: foo
+      description: |
+        ## Get a count of Visitors by Project or Competitor location.
+
+        Used to present observed visits during the Campaign report period for specific locations in a format suitable to be displayed on a map.
+
+        Specify whether to report competitor locations or Project locations and the distance to limit competitor locations.
+
+        ## Output Format
+        An array of arrays, where the outer array elements are arrays of the following data points, in order:
+        1) Competitor or Project place id
+        2) Competitor or Project place name
+        3) A Point object (GeoJSON) that contains the coordinates for the place location.
+        4) An integer representation of the number of observed visits to the specified place during the Campaign report period.
+
       parameters:
         - in: header
           name: Authorization
@@ -293,7 +306,7 @@ paths:
           description: the distance in *meters* to filter for competitor locations.
       responses:
         200:
-          description: A basic response including report data and messages. The data field contains nested arrays. The innermost elements are intended to be locations on a map. The values in order are `1) place id, 2) place name, 3) centroid coordinates, 4) count of visits within the Campaign report date range`.
+          description: A basic response including report data and messages.
           schema:
             properties:
               data:
