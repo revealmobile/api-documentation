@@ -14,7 +14,7 @@ schemes:
   - https
 externalDocs:
   description: API Documentation
-  url: https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792 #todo update
+  url: https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792 #todo update
 paths:
   /session:
     post:
