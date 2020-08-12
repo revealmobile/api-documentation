@@ -278,7 +278,6 @@ paths:
           name: place
           type: integer
           format: int64
-          #todo update description with reflink for top project endpoint
           required: true
         - in: query
           name: competitor
@@ -306,8 +305,6 @@ paths:
                   $ref: '#/definitions/Message'
         400:
           description: bad input parameter
-
-
 definitions:
   BasicResponse:
     type: object
