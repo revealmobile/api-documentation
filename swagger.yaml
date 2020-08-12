@@ -260,10 +260,7 @@ paths:
     get:
       summary: Count Campaign Visitors By Location
       operationId: countCampaignVisitorsByLocation
-      description: |
-        foo bar baz
-      produces:
-        application/json
+      description: foo
       parameters:
         - in: header
           name: Authorization
@@ -282,9 +279,6 @@ paths:
           type: integer
           format: int64
           #todo update description with reflink for top project endpoint
-          description: |
-          The place_id corresponding to the top project place.
-          The top project place can be found using the top project endpoint.
           required: true
         - in: query
           name: competitor
@@ -300,7 +294,7 @@ paths:
           description: the distance in *meters* to filter for competitor locations.
       responses:
         200:
-          description: A basic response including report data and response messages.
+          description: A basic response including report data and messages. The data field contains nested arrays. The innermost elements are intended to be locations on a map. The values in order are `1) place id, 2) place name, 3) centroid coordinates, 4) count of visits within the Campaign report date range`.
           schema:
             properties:
               data:
