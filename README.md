@@ -1,7 +1,7 @@
 # Report API Documentation 
 
 ## Access the docs
-[Go to the Docs](https://revealmobile.github.io/report-api-documentation)
+[Go to the Docs](https://revealmobile.github.io/api-documentation)
 
 ## Useful Terminology
 - `Project`: logical grouping of 1 or more locations that represent an *Advertiser* in the VISIT Local Platform.
