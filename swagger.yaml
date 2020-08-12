@@ -199,6 +199,96 @@ paths:
                   $ref: '#/definitions/Message'
         400:
           description: bad input parameter
+  /project/{project_id}/place:
+    get:
+      summary: Project Places
+      operationId: findPlaces
+      description: |
+        ## Find places associated with a project.
+
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a **Session**
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: top
+          description: Find the top places by daily visitation.
+          type: boolean
+          default: false
+        - in: query
+          name: limit
+          description: The maximum number of places to return.
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: A basic response including place data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                  {
+                    "polygon_id": 49129973,
+                    "name": "Crate and Barrel",
+                    "location": {
+                      "type": "Point",
+                      "coordinates": [
+                        -88.34125271866186,
+                        41.89452255937315
+                      ]
+                    },
+                    "tags": [
+                    {
+                      "id": 0,
+                      "name": null,
+                      "organization_id": null
+                    }
+                    ],
+                    "enabled": true,
+                    "confidence": 50,
+                    "last_modified": null,
+                    "id": 2777983,
+                    "categories": [
+                      999392276222313773
+                    ],
+                    "last_verified": null,
+                    "organization_id": null,
+                    "address": {
+                      "city": "Geneva",
+                      "street_alternate": null,
+                      "state": "IL",
+                      "country": "USA",
+                      "postal_code": "60134",
+                      "street": "1102 Commons Dr"
+                    },
+                    "metadata_provider_id": 1,
+                    "external_key": "131627673",
+                    "chain_id": 1353143788750505856,
+                    "created": "2020-08-12T16:12:50.162",
+                    "master_id": null
+                  }
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+
+
   /report/campaign/{campaign_id}/conversion:
     get:
       summary: Campaign Conversions
