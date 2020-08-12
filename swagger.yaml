@@ -1,6 +1,9 @@
 swagger: '2.0'
 info:
-  description: Generate location-based stats and metrics for digital advertising campaigns.
+  description: |
+  Generate location-based stats and metrics for digital advertising campaigns.
+
+  [Request Limits](https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792#limits)
   version: 0.1.0
   title: Reveal Mobile VISIT API
   contact:
