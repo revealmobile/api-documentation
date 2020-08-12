@@ -43,5 +43,9 @@ Index value = (0.092 / 0.1) * 100 = 92
 
 The above example shows a decreasing trend in visits by 8 index points when accounting for fluctuation in sample size.
 [More Info on Index Values](https://bizfluent.com/how-5339534-calculate-index-numbers.html)
+## Limits
+Requests are limited to:
+- 10 requests per minute
+- 1000 results retrieved per request
 
 
