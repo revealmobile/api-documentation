@@ -15,6 +15,8 @@ externalDocs:
 paths:
   /session:
     post:
+      tags:
+        - Session
       summary: Create Session
       operationId: session
       description: |
@@ -51,6 +53,8 @@ paths:
                   $ref: '#/definitions/Message'
   /project/{project_id}/place:
     get:
+      tags:
+        - Project
       summary: Project Places
       operationId: findPlaces
       description: |
@@ -65,7 +69,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: project_id
           description: The id of the project.
@@ -140,6 +144,8 @@ paths:
           description: bad input parameter
   /report/project/{project_id}/visitor:
     get:
+      tags:
+        - Report
       summary: Visitor Count Report
       operationId: countVisitors
       description: |
@@ -161,7 +167,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: project_id
           description: The id of the advertiser
@@ -216,6 +222,8 @@ paths:
           description: bad input parameter
   /report/project/{project_id}/competitor:
     get:
+      tags:
+        - Report
       summary: Competitor Report
       operationId: countCompetitors
       description: |
@@ -237,7 +245,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: project_id
           description: The id of the advertiser
@@ -289,8 +297,10 @@ paths:
           description: bad input parameter
   /report/project/{project_id}/competitor/daily:
     get:
-      summary: Project and Competitor Locations Foot Traffic By Day
-      operationId: projectCompetitorFootTrafficByDay
+      tags:
+        - Report
+      summary: Foot Traffic By Day
+      operationId: footTrafficByDay
       description:  |
         ## Get daily visitation to Project and Competitor locations
         Provides a time-series report with Project locations, Competitor locations and the observed visits per store.
@@ -307,7 +317,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: project_id
           description: The id of the project.
@@ -340,57 +350,57 @@ paths:
               data:
                 description: Results of the report request.
                 example: [
+                [
+                  "Piglet Inc",
                   [
-                    "Piglet Inc",
-                    [
-                    [
-                      "2020-06-25",
-                      7.256916996047431
-                    ],
-                    [
-                      "2020-06-26",
-                      7.681818181818182
-                    ],
-                    [
-                      "2020-06-27",
-                      7.169960474308301
-                    ]
-                    ]
+                  [
+                    "2020-06-25",
+                    7.256916996047431
                   ],
                   [
-                    "Kroger",
-                    [
-                    [
-                      "2020-06-25",
-                      14.370332996972754
-                    ],
-                    [
-                      "2020-06-26",
-                      15.906659939455096
-                    ],
-                    [
-                      "2020-06-27",
-                      15.99949545913219
-                    ],
-                    ]
+                    "2020-06-26",
+                    7.681818181818182
                   ],
                   [
-                    "Publix Super Market",
-                    [
-                    [
-                      "2020-06-25",
-                      14.364963503649635
-                    ],
-                    [
-                      "2020-06-26",
-                      15.966423357664233
-                    ],
-                    [
-                      "2020-06-27",
-                      15.98978102189781
-                    ]
-                    ]
+                    "2020-06-27",
+                    7.169960474308301
+                  ]
+                  ]
+                ],
+                [
+                  "Kroger",
+                  [
+                  [
+                    "2020-06-25",
+                    14.370332996972754
                   ],
+                  [
+                    "2020-06-26",
+                    15.906659939455096
+                  ],
+                  [
+                    "2020-06-27",
+                    15.99949545913219
+                  ],
+                  ]
+                ],
+                [
+                  "Publix Super Market",
+                  [
+                  [
+                    "2020-06-25",
+                    14.364963503649635
+                  ],
+                  [
+                    "2020-06-26",
+                    15.966423357664233
+                  ],
+                  [
+                    "2020-06-27",
+                    15.98978102189781
+                  ]
+                  ]
+                ],
                 ]
               messages:
                 type: array
@@ -400,6 +410,8 @@ paths:
           description: bad input parameter
   /report/campaign/{campaign_id}/conversion:
     get:
+      tags:
+        - Report
       summary: Campaign Conversions
       operationId: countConversions
       description: |
@@ -422,7 +434,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: campaign_id
           description: The id of the advertiser
@@ -457,6 +469,8 @@ paths:
           description: bad input parameter
   /report/campaign/{campaign_id}/visitor:
     get:
+      tags:
+        - Report
       summary: Count Campaign Visitors By Location
       operationId: countCampaignVisitorsByLocation
       description: |
@@ -479,7 +493,7 @@ paths:
           required: true
           type: string
           format: JWT
-          description: a valid JWT token generated from creating a **Session**
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: campaign_id
           description: The id of the advertiser
