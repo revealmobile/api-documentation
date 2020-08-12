@@ -1,11 +1,11 @@
 swagger: '2.0'
 info:
-  description: Generate stats and metrics for mobile advertising campaigns.
+  description: Generate location-based stats and metrics for digital advertising campaigns.
   version: 0.1.0
   title: Reveal Mobile VISIT API
   # put the contact info for your development or API team
   contact:
-    email: engineering@revalmobile.com
+    email: support@revalmobile.com
 host: gateway-service.revealmobile.com
 basePath: /
 schemes:
@@ -214,7 +214,7 @@ paths:
 
         If a Pre-Campaign Segment is selected, the count is returned for each Segment in the campaign period for devices that were in the selected Pre-Campaign Segment.
 
-        [Learn More About Campaign Segments](https://google.com)
+        [Learn More About Campaign Segments](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#campaign-segments)
 
         ## Output Formats
         * **Count**  - integer representation of the number of conversions in the Campaign report period.
