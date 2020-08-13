@@ -20,7 +20,7 @@ paths:
       summary: Create Session
       operationId: session
       description: |
-        Create an api session token. The token will be used in the **Authorization** header of all *GET* requests. The token expires periodically at which time a new session token will need to be generated.
+        Create an api session token. The token will be used in the **Authorization** header of all requests. The token expires periodically at which time a new session token will need to be generated.
       produces:
         - application/json
       consumes:
