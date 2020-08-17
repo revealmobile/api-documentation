@@ -176,13 +176,13 @@ paths:
           required: true
         - in: query
           name: from
-          description: The start date of the report. Example - 2020-08-01. Valid values range from 60 days ago until today, unless the specified metric is Index in wich case 30 days ago is the max lookback.
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
           required: true
           type: string
           format: date
         - in: query
           name: to
-          description: The end date of the report. Example - 2020-08-30. Valid values range from 60 days ago until today, unless the specified metric is Index in wich case 30 days ago is the max lookback.
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
           required: true
           type: string
           format: date
@@ -254,13 +254,13 @@ paths:
           required: true
         - in: query
           name: from
-          description: The start date of the report. Example - 2020-08-01. Valid values range from 45 days ago until today, unless the metric format is Index in which case the maximum is 30 days.
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
           required: true
           type: string
           format: date
         - in: query
           name: to
-          description: The end date of the report. Example - 2020-08-30. Valid values range from 45 days ago until today, unless the metric format is Index in which case the maximum is 30 days.
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
           required: true
           type: string
           format: date
@@ -326,13 +326,13 @@ paths:
           required: true
         - in: query
           name: from
-          description: The start date of the report. Example - 2020-08-01. Valid values range from 60 days ago until today.
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`.
           type: string
           format: date
           required: true
         - in: query
           name: to
-          description: The end date of the report. Example - 2020-08-30. Valid values range from 60 days ago until today.
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`.
           type: string
           format: date
           required: true
