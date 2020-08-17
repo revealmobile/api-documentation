@@ -1,37 +1,173 @@
 swagger: '2.0'
 info:
-  description: Generate stats and metrics for mobile advertising campaigns.
-  version: 1.0.1
-  title: Reveal Mobile Attribution Report API
-  # put the contact info for your development or API team
+  description: Generate location-based stats and metrics for digital advertising campaigns. [Request Limits](https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792#limits)
+  version: 0.1.0
+  title: Reveal Mobile VISIT API
   contact:
-    email: enginnering@revalmobile.com
-
-  # license:
-  #   name: Apache 2.0
-  #   url: http://www.apache.org/licenses/LICENSE-2.0.html
-
+    email: support@revalmobile.com
+host: gateway-service.revealmobile.com
+basePath: /
+schemes:
+  - https
+externalDocs:
+  description: API Documentation
+  url: https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792 #todo update
 paths:
-  /report/project/{project_id}/visitor:
+  /session:
+    post:
+      tags:
+        - Session
+      summary: Create Session
+      operationId: session
+      description: |
+        Create an api session token. The token will be used in the **Authorization** header of all requests. The token expires periodically at which time a new session token will need to be generated.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: email_address
+          description: The email address used as a login for a VISIT Local account.
+          schema:
+            type: object
+            required:
+              - email_address
+              - password
+            properties:
+              email_address:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: A basic response including JWT token and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTcyMDY1MTQsInByaW5jaXBhbCI6eyJpZCI6MjAwMDI2NTIyMzQ3ODQ0NTU3OSwibmFtZSI6Ikphc29uIENyb2NrZXIiLCJlbWFpbF9hZGRyZXNzIjoiamNyb2NrZXJAcmV2ZWFsbW9iaWxlLmNvbSIsIm9yZ2FuaXphdGlvbiI6MTQ2OTY3MTQ3MDcwNjcyMjQ3NCwiYWRtaW5pc3RyYXRvciI6dHJ1ZSwicm9sZSI6IkFkbWluaXN0cmF0b3IifX0.T3_S03a79Sf0HMjHBtSeb1kcZf9S4LrgZBHGXMoB8l4
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+  /project/{project_id}/place:
     get:
       tags:
-        - developers
-      summary: Visitor Count Report
-      operationId: countVisitors
+        - Project
+      summary: Project Places
+      operationId: findPlaces
       description: |
-        # Get a report of Visitors within a specified date range, to a specified project. 
+        ## Get metadata for Project locations
 
-        ### Optional Fiters 
-        * **Repeat Visitors** - Visited Project locations more than 1x in report period.
-        * **Target Visitors** - Visited project location that was situated within a specified proximity of the Visitor's recorded Home or Work location. 
-
-        ### Output Formats
-        * **Count** - returns a raw count of unique Visitors matching the specified criteria.
-        * **Percentage** - returns a percentage metric indicating the ratio of project visitors within a specified proximity of their Home or Work location to total project Visitors within the report period.
-        * **Index** - returns an index value comparison in unique Visitors
+        The results are in descending order based on total number of observed visits at each location.
       produces:
         - application/json
       parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: top
+          description: Flag to specify whether or not to limit the number of results.
+          type: boolean
+          default: false
+        - in: query
+          name: limit
+          description: The maximum number of places to return.
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: A basic response including data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                {
+                  "polygon_id": 49129973,
+                  "name": "Crate and Barrel",
+                  "location": {
+                    "type": "Point",
+                    "coordinates": [
+                      -88.34125271866186,
+                      41.89452255937315
+                    ]
+                  },
+                  "tags": [
+                  {
+                    "id": 0,
+                    "name": null,
+                    "organization_id": null
+                  }
+                  ],
+                  "enabled": true,
+                  "confidence": 50,
+                  "last_modified": null,
+                  "id": 2777983,
+                  "categories": [
+                    999392276222313773
+                  ],
+                  "last_verified": null,
+                  "organization_id": null,
+                  "address": {
+                    "city": "Geneva",
+                    "street_alternate": null,
+                    "state": "IL",
+                    "country": "USA",
+                    "postal_code": "60134",
+                    "street": "1102 Commons Dr"
+                  },
+                  "metadata_provider_id": 1,
+                  "external_key": "131627673",
+                  "chain_id": 1353143788750505856,
+                  "created": "2020-08-12T16:12:50.162",
+                  "master_id": null
+                }
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/visitor:
+    get:
+      tags:
+        - Report
+      summary: Visitor Count Report
+      operationId: countVisitors
+      description: |
+        # Get a report of Visitors within a specified date range, to a specified [Project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
+
+        ### Optional Filters
+        * **Repeat Visitors** - Visited Project locations more than 1x in report period.
+        * **Target Visitors** - Visited Project location that was situated within a specified proximity of the Visitor's recorded Home or Work location.
+
+        ### Output Formats
+        * **Count** - An integer representation of unique Visitors matching the specified criteria.
+        * **Percentage** - A double representation a percentage metric indicating the ratio of project visitors within a specified proximity of their Home or Work location to total project Visitors within the report period.
+        * **Index** - An double representation of index value comparison in unique Visitors. [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
         - in: path
           name: project_id
           description: The id of the advertiser
@@ -40,18 +176,16 @@ paths:
           required: true
         - in: query
           name: from
-          description: The start date of the report.
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
           required: true
           type: string
           format: date
-          pattern: "YYYY-MM-DD"
         - in: query
           name: to
-          description: The end date of the report.
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
           required: true
           type: string
           format: date
-          pattern: "YYYY-MM-DD"
         - in: query
           name: format
           required: true
@@ -67,7 +201,7 @@ paths:
           name: distance
           type: integer
           format: int32
-          description: Includes visitors within the specified distance of a Visitor's Home or Work location.
+          description: Includes visitors within the specified distance (in miles) of a Visitor's Home or Work location.
         - in: query
           name: target
           type: string
@@ -76,7 +210,325 @@ paths:
         200:
           description: A basic response including report data and response messages.
           schema:
-            $ref: '#/definitions/BasicResponse'
+            properties:
+              data:
+                description: Results of the report request.
+                example: 11200
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/competitor:
+    get:
+      tags:
+        - Report
+      summary: Competitor Report
+      operationId: countCompetitors
+      description: |
+        # Get a report of Visitor counts for Project Competitors.
+
+        Competitor locations are stores sharing the same category as the project,
+        that have also been co-visited by project Visitors within the specified report date range.
+
+        ### Output Formats
+        * **Count** - An integer representation of the number of Visitors that visited the Project locations and one of the competitors locations within the report timeframe.
+        * **Percentage** - A double representation of the ratio of Visitors that visited a competitor location to the total
+        Project Visitors in the report timeframe.
+        * **Index** - [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: format
+          required: true
+          type: string
+          enum: [Count, Index, Percentage]
+          description: The metric format for the report
+        - in: query
+          name: all
+          type: boolean
+          default: false
+          description: Flag to include competitors in all categories instead of the project category.
+        - in: query
+          name: limit
+          type: integer
+          format: int32
+          description: The number of top competitors to include in the report.
+          default: 5
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: { "Walmart": 11200, "Target": 97000, "Dollar General": 52000}
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/competitor/daily:
+    get:
+      tags:
+        - Report
+      summary: Foot Traffic By Day
+      operationId: footTrafficByDay
+      description:  |
+        ## Get daily visitation to Project and Competitor locations
+        Provides a time-series report with Project locations, Competitor locations and the observed visits per store.
+
+        ## Output format
+        An array of arrays, where the outer array elements are 2-element arrays consisting of:
+        1. Project or Competitor name
+        2. Double representation of the visits per store in the specified date range
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`.
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`.
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: limit
+          description: The number of competitors to be included in the report.
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                [
+                  "Piglet Inc",
+                  [
+                  [
+                    "2020-06-25",
+                    7.256916996047431
+                  ],
+                  [
+                    "2020-06-26",
+                    7.681818181818182
+                  ],
+                  [
+                    "2020-06-27",
+                    7.169960474308301
+                  ]
+                  ]
+                ],
+                [
+                  "Kroger",
+                  [
+                  [
+                    "2020-06-25",
+                    14.370332996972754
+                  ],
+                  [
+                    "2020-06-26",
+                    15.906659939455096
+                  ],
+                  [
+                    "2020-06-27",
+                    15.99949545913219
+                  ],
+                  ]
+                ],
+                [
+                  "Publix Super Market",
+                  [
+                  [
+                    "2020-06-25",
+                    14.364963503649635
+                  ],
+                  [
+                    "2020-06-26",
+                    15.966423357664233
+                  ],
+                  [
+                    "2020-06-27",
+                    15.98978102189781
+                  ]
+                  ]
+                ],
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/campaign/{campaign_id}/conversion:
+    get:
+      tags:
+        - Report
+      summary: Campaign Conversions
+      operationId: countConversions
+      description: |
+        ## Get the number of conversions for any Campaign Segment up until the most recent date of the Campaign.
+
+        Defaults to counting all conversions for Campaign devices, but can optionally specify a `Pre-Campaign Segment` to filter by.
+
+        If a `Pre-Campaign Segment` is selected, the count is returned for each `Campaign Segment` that is a subset of the selected `Pre-Campaign-Segment`
+
+        [Learn More About Campaign Segments](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#campaign-segments)
+
+        ## Output Formats
+        * **Count**  - integer representation of the number of conversions in the Campaign report period.
+        * **Percentage**  - double representation of the ratio of Segment Conversions to the total devices in a campaign.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: campaign_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: segment
+          description: if not provided, defaults to all conversions.
+          type: string
+          enum: [Customers, Competitors, NeverVisited]
+          required: false
+        - in: query
+          name: format
+          type: string
+          enum: [Count, Percentage]
+          required: false
+          default: Count
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example:  {"AllConversions":24}
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/campaign/{campaign_id}/visitor:
+    get:
+      tags:
+        - Report
+      summary: Count Campaign Visitors By Location
+      operationId: countCampaignVisitorsByLocation
+      description: |
+        ## Get a count of Visitors by Project or Competitor location.
+
+        Used to present observed visits during the Campaign report period for specific locations in a format suitable to be displayed on a map.
+
+        Specify whether to report competitor locations or Project locations and the distance to limit competitor locations.
+
+        ## Output Format
+        An array of arrays, where the outer array elements are arrays of the following data points, in order:
+        1) Competitor or Project place id
+        2) Competitor or Project place name
+        3) A Point object (GeoJSON) that contains the coordinates for the place location.
+        4) An integer representation of the number of observed visits to the specified place during the Campaign report period.
+
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: campaign_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: place
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: competitor
+          type: boolean
+          default: false
+          description: |
+            True: count the visits for the Competitor locations within specified distance of the specified place.
+            False: count the visits for the specified place
+        - in: query
+          name: distance
+          type: number
+          format: double
+          description: the distance in *meters* to filter for competitor locations.
+      responses:
+        200:
+          description: A basic response including report data and messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example:  [[9072665,"Walmart Supercenter",{"type":"Point","coordinates":[-78.5349478330311,35.952463795574296]},2710],[9049430,"Walmart Supercenter",{"type":"Point","coordinates":[-78.84283508934658,35.7148721501593]},1451]]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
         400:
           description: bad input parameter
 definitions:
@@ -88,11 +540,6 @@ definitions:
     properties:
       data:
         description: Results of the report request.
-        type: object
-        example: {
-          "Walmart": "112000",
-          "Target": "95000"
-        }
       messages:
         type: array
         items:
@@ -109,7 +556,7 @@ definitions:
         example: "*"
       level:
         type: string
-        example: success
+        example: Information
       text:
         type: string
         example: Request Successful
