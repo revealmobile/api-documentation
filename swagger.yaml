@@ -1,718 +1,562 @@
----
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "This is a sample server Petstore server.  You can find out more about\
-    \ Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).\
-    \  For this sample, you can use the api key `special-key` to test the authorization\
-    \ filters."
-  version: "1.0.5"
-  title: "Swagger Petstore"
-  termsOfService: "http://swagger.io/terms/"
+  description: Generate location-based stats and metrics for digital advertising campaigns. [Request Limits](https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792#limits)
+  version: 0.1.0
+  title: Reveal Mobile VISIT API
   contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "petstore.swagger.io"
-basePath: "/v2"
-tags:
-- name: "pet"
-  description: "Everything about your Pets"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
-- name: "store"
-  description: "Access to Petstore orders"
-- name: "user"
-  description: "Operations about user"
-  externalDocs:
-    description: "Find out more about our store"
-    url: "http://swagger.io"
+    email: support@revalmobile.com
+host: gateway-service.revealmobile.com
+basePath: /
 schemes:
-- "https"
-- "http"
-paths:
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-      - "pet"
-      summary: "uploads an image"
-      description: ""
-      operationId: "uploadFile"
-      consumes:
-      - "multipart/form-data"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    put:
-      tags:
-      - "pet"
-      summary: "Update an existing pet"
-      description: ""
-      operationId: "updatePet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-        405:
-          description: "Validation exception"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByStatus:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-          default: "available"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid status value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Multiple tags can be provided with comma separated strings. Use\
-        \ tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid tag value"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - api_key: []
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      responses:
-        405:
-          description: "Invalid input"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-    delete:
-      tags:
-      - "pet"
-      summary: "Deletes a pet"
-      description: ""
-      operationId: "deletePet"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Pet not found"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
-      description: ""
-      operationId: "placeOrder"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "order placed for purchasing the pet"
-        required: true
-        schema:
-          $ref: "#/definitions/Order"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid Order"
-  /store/order/{orderId}:
-    get:
-      tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.\
-        \ Other values will generated exceptions"
-      operationId: "getOrderById"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
-        required: true
-        type: "integer"
-        maximum: 10
-        minimum: 1
-        format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Order"
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-    delete:
-      tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.\
-        \ Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
-        required: true
-        type: "integer"
-        minimum: 1
-        format: "int64"
-      responses:
-        400:
-          description: "Invalid ID supplied"
-        404:
-          description: "Order not found"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      security:
-      - api_key: []
-  /user/createWithArray:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithArrayInput"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/createWithList:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
-      description: ""
-      operationId: "createUsersWithListInput"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "List of user object"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-  /user/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "Updated user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        400:
-          description: "Invalid user supplied"
-        404:
-          description: "User not found"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        400:
-          description: "Invalid username supplied"
-        404:
-          description: "User not found"
-  /user/login:
-    get:
-      tags:
-      - "user"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          headers:
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-          schema:
-            type: "string"
-        400:
-          description: "Invalid username/password supplied"
-  /user/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-  /user:
-    post:
-      tags:
-      - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      - "application/xml"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-securityDefinitions:
-  api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
-  petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "https://petstore.swagger.io/oauth/authorize"
-    flow: "implicit"
-    scopes:
-      read:pets: "read your pets"
-      write:pets: "modify pets in your account"
-definitions:
-  ApiResponse:
-    type: "object"
-    properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
-      message:
-        type: "string"
-  Category:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Category"
-  Pet:
-    type: "object"
-    required:
-    - "name"
-    - "photoUrls"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
-        type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          type: "string"
-          xml:
-            name: "photoUrl"
-      tags:
-        type: "array"
-        xml:
-          wrapped: true
-        items:
-          xml:
-            name: "tag"
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "pet status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
-    xml:
-      name: "Pet"
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
-  Order:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      petId:
-        type: "integer"
-        format: "int64"
-      quantity:
-        type: "integer"
-        format: "int32"
-      shipDate:
-        type: "string"
-        format: "date-time"
-      status:
-        type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
-      complete:
-        type: "boolean"
-    xml:
-      name: "Order"
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      phone:
-        type: "string"
-      userStatus:
-        type: "integer"
-        format: "int32"
-        description: "User Status"
-    xml:
-      name: "User"
+  - https
 externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+  description: API Documentation
+  url: https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792 #todo update
+paths:
+  /session:
+    post:
+      tags:
+        - Session
+      summary: Create Session
+      operationId: session
+      description: |
+        Create an api session token. The token will be used in the **Authorization** header of all requests. The token expires periodically at which time a new session token will need to be generated.
+      produces:
+        - application/json
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: email_address
+          description: The email address used as a login for a VISIT Local account.
+          schema:
+            type: object
+            required:
+              - email_address
+              - password
+            properties:
+              email_address:
+                type: string
+              password:
+                type: string
+      responses:
+        201:
+          description: A basic response including JWT token and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1OTcyMDY1MTQsInByaW5jaXBhbCI6eyJpZCI6MjAwMDI2NTIyMzQ3ODQ0NTU3OSwibmFtZSI6Ikphc29uIENyb2NrZXIiLCJlbWFpbF9hZGRyZXNzIjoiamNyb2NrZXJAcmV2ZWFsbW9iaWxlLmNvbSIsIm9yZ2FuaXphdGlvbiI6MTQ2OTY3MTQ3MDcwNjcyMjQ3NCwiYWRtaW5pc3RyYXRvciI6dHJ1ZSwicm9sZSI6IkFkbWluaXN0cmF0b3IifX0.T3_S03a79Sf0HMjHBtSeb1kcZf9S4LrgZBHGXMoB8l4
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+  /project/{project_id}/place:
+    get:
+      tags:
+        - Project
+      summary: Project Places
+      operationId: findPlaces
+      description: |
+        ## Get metadata for Project locations
+
+        The results are in descending order based on total number of observed visits at each location.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: top
+          description: Flag to specify whether or not to limit the number of results.
+          type: boolean
+          default: false
+        - in: query
+          name: limit
+          description: The maximum number of places to return.
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        200:
+          description: A basic response including data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                {
+                  "polygon_id": 49129973,
+                  "name": "Crate and Barrel",
+                  "location": {
+                    "type": "Point",
+                    "coordinates": [
+                      -88.34125271866186,
+                      41.89452255937315
+                    ]
+                  },
+                  "tags": [
+                  {
+                    "id": 0,
+                    "name": null,
+                    "organization_id": null
+                  }
+                  ],
+                  "enabled": true,
+                  "confidence": 50,
+                  "last_modified": null,
+                  "id": 2777983,
+                  "categories": [
+                    999392276222313773
+                  ],
+                  "last_verified": null,
+                  "organization_id": null,
+                  "address": {
+                    "city": "Geneva",
+                    "street_alternate": null,
+                    "state": "IL",
+                    "country": "USA",
+                    "postal_code": "60134",
+                    "street": "1102 Commons Dr"
+                  },
+                  "metadata_provider_id": 1,
+                  "external_key": "131627673",
+                  "chain_id": 1353143788750505856,
+                  "created": "2020-08-12T16:12:50.162",
+                  "master_id": null
+                }
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/visitor:
+    get:
+      tags:
+        - Report
+      summary: Visitor Count Report
+      operationId: countVisitors
+      description: |
+        # Get a report of Visitors within a specified date range, to a specified [Project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
+
+        ### Optional Filters
+        * **Repeat Visitors** - Visited Project locations more than 1x in report period.
+        * **Target Visitors** - Visited Project location that was situated within a specified proximity of the Visitor's recorded Home or Work location.
+
+        ### Output Formats
+        * **Count** - An integer representation of unique Visitors matching the specified criteria.
+        * **Percentage** - A double representation a percentage metric indicating the ratio of project visitors within a specified proximity of their Home or Work location to total project Visitors within the report period.
+        * **Index** - An double representation of index value comparison in unique Visitors. [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`, unless the specified metric is *Index* in which case `30 days ago` is the maximum lookback.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: format
+          required: true
+          type: string
+          enum: [Count, Index, Percentage]
+          description: The metric format for the report
+        - in: query
+          name: repeat
+          type: boolean
+          default: false
+          description: Flag to include only Visitors observed twice in the requested range. Only applies to metric formats *Count* and *Percentage*
+        - in: query
+          name: distance
+          type: integer
+          format: int32
+          description: Includes visitors within the specified distance (in miles) of a Visitor's Home or Work location.
+        - in: query
+          name: target
+          type: string
+          enum: [Home, Work]
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: 11200
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/competitor:
+    get:
+      tags:
+        - Report
+      summary: Competitor Report
+      operationId: countCompetitors
+      description: |
+        # Get a report of Visitor counts for Project Competitors.
+
+        Competitor locations are stores sharing the same category as the project,
+        that have also been co-visited by project Visitors within the specified report date range.
+
+        ### Output Formats
+        * **Count** - An integer representation of the number of Visitors that visited the Project locations and one of the competitors locations within the report timeframe.
+        * **Percentage** - A double representation of the ratio of Visitors that visited a competitor location to the total
+        Project Visitors in the report timeframe.
+        * **Index** - [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `45 days ago until today`, unless the metric format is *Index* in which case the maximum is `30 days`.
+          required: true
+          type: string
+          format: date
+        - in: query
+          name: format
+          required: true
+          type: string
+          enum: [Count, Index, Percentage]
+          description: The metric format for the report
+        - in: query
+          name: all
+          type: boolean
+          default: false
+          description: Flag to include competitors in all categories instead of the project category.
+        - in: query
+          name: limit
+          type: integer
+          format: int32
+          description: The number of top competitors to include in the report.
+          default: 5
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: { "Walmart": 11200, "Target": 97000, "Dollar General": 52000}
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/project/{project_id}/competitor/daily:
+    get:
+      tags:
+        - Report
+      summary: Foot Traffic By Day
+      operationId: footTrafficByDay
+      description:  |
+        ## Get daily visitation to Project and Competitor locations
+        Provides a time-series report with Project locations, Competitor locations and the observed visits per store.
+
+        ## Output format
+        An array of arrays, where the outer array elements are 2-element arrays consisting of:
+        1. Project or Competitor name
+        2. Double representation of the visits per store in the specified date range
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: project_id
+          description: The id of the project.
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: from
+          description: The start date of the report. Example - 2020-08-01. Valid values range from `60 days ago until today`.
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: to
+          description: The end date of the report. Example - 2020-08-30. Valid values range from `60 days ago until today`.
+          type: string
+          format: date
+          required: true
+        - in: query
+          name: limit
+          description: The number of competitors to be included in the report.
+          type: integer
+          format: int32
+          default: 5
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example: [
+                [
+                  "Piglet Inc",
+                  [
+                  [
+                    "2020-06-25",
+                    7.256916996047431
+                  ],
+                  [
+                    "2020-06-26",
+                    7.681818181818182
+                  ],
+                  [
+                    "2020-06-27",
+                    7.169960474308301
+                  ]
+                  ]
+                ],
+                [
+                  "Kroger",
+                  [
+                  [
+                    "2020-06-25",
+                    14.370332996972754
+                  ],
+                  [
+                    "2020-06-26",
+                    15.906659939455096
+                  ],
+                  [
+                    "2020-06-27",
+                    15.99949545913219
+                  ],
+                  ]
+                ],
+                [
+                  "Publix Super Market",
+                  [
+                  [
+                    "2020-06-25",
+                    14.364963503649635
+                  ],
+                  [
+                    "2020-06-26",
+                    15.966423357664233
+                  ],
+                  [
+                    "2020-06-27",
+                    15.98978102189781
+                  ]
+                  ]
+                ],
+                ]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/campaign/{campaign_id}/conversion:
+    get:
+      tags:
+        - Report
+      summary: Campaign Conversions
+      operationId: countConversions
+      description: |
+        ## Get the number of conversions for any Campaign Segment up until the most recent date of the Campaign.
+
+        Defaults to counting all conversions for Campaign devices, but can optionally specify a `Pre-Campaign Segment` to filter by.
+
+        If a `Pre-Campaign Segment` is selected, the count is returned for each `Campaign Segment` that is a subset of the selected `Pre-Campaign-Segment`
+
+        [Learn More About Campaign Segments](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#campaign-segments)
+
+        ## Output Formats
+        * **Count**  - integer representation of the number of conversions in the Campaign report period.
+        * **Percentage**  - double representation of the ratio of Segment Conversions to the total devices in a campaign.
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: campaign_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: segment
+          description: if not provided, defaults to all conversions.
+          type: string
+          enum: [Customers, Competitors, NeverVisited]
+          required: false
+        - in: query
+          name: format
+          type: string
+          enum: [Count, Percentage]
+          required: false
+          default: Count
+      responses:
+        200:
+          description: A basic response including report data and response messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example:  {"AllConversions":24}
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+  /report/campaign/{campaign_id}/visitor:
+    get:
+      tags:
+        - Report
+      summary: Count Campaign Visitors By Location
+      operationId: countCampaignVisitorsByLocation
+      description: |
+        ## Get a count of Visitors by Project or Competitor location.
+
+        Used to present observed visits during the Campaign report period for specific locations in a format suitable to be displayed on a map.
+
+        Specify whether to report competitor locations or Project locations and the distance to limit competitor locations.
+
+        ## Output Format
+        An array of arrays, where the outer array elements are arrays of the following data points, in order:
+        1) Competitor or Project place id
+        2) Competitor or Project place name
+        3) A Point object (GeoJSON) that contains the coordinates for the place location.
+        4) An integer representation of the number of observed visits to the specified place during the Campaign report period.
+
+      parameters:
+        - in: header
+          name: Authorization
+          required: true
+          type: string
+          format: JWT
+          description: a valid JWT token generated from creating a [Session](#/Session/session).
+        - in: path
+          name: campaign_id
+          description: The id of the advertiser
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: place
+          type: integer
+          format: int64
+          required: true
+        - in: query
+          name: competitor
+          type: boolean
+          default: false
+          description: |
+            True: count the visits for the Competitor locations within specified distance of the specified place.
+            False: count the visits for the specified place
+        - in: query
+          name: distance
+          type: number
+          format: double
+          description: the distance in *meters* to filter for competitor locations.
+      responses:
+        200:
+          description: A basic response including report data and messages.
+          schema:
+            properties:
+              data:
+                description: Results of the report request.
+                example:  [[9072665,"Walmart Supercenter",{"type":"Point","coordinates":[-78.5349478330311,35.952463795574296]},2710],[9049430,"Walmart Supercenter",{"type":"Point","coordinates":[-78.84283508934658,35.7148721501593]},1451]]
+              messages:
+                type: array
+                items:
+                  $ref: '#/definitions/Message'
+        400:
+          description: bad input parameter
+definitions:
+  BasicResponse:
+    type: object
+    required:
+      - data
+      - messages
+    properties:
+      data:
+        description: Results of the report request.
+      messages:
+        type: array
+        items:
+          $ref: '#/definitions/Message'
+  Message:
+    type: object
+    required:
+      - context
+      - level
+      - text
+    properties:
+      context:
+        type: string
+        example: "*"
+      level:
+        type: string
+        example: Information
+      text:
+        type: string
+        example: Request Successful

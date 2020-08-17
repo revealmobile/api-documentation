@@ -1,58 +1,51 @@
-# How to host Swagger API documentation with GitHub Pages
-[<img alt="The blog of Peter Evans: How to Host Swagger Documentation With Github Pages" title="View blog post" src="https://peterevans.dev/img/blog-published-badge.svg">](https://peterevans.dev/posts/how-to-host-swagger-docs-with-github-pages/)
+# Report API Documentation 
 
-This repository is a template for using the [Swagger UI](https://github.com/swagger-api/swagger-ui) to dynamically generate beautiful documentation for your API and host it for free with GitHub Pages.
+## Access the docs
+[Go to the Docs](https://revealmobile.github.io/api-documentation)
 
-The template will periodically auto-update the Swagger UI dependency and create a pull request. See the [GitHub Actions workflow here](.github/workflows/update-swagger.yml).
+## Useful Terminology
+- `Project`: logical grouping of 1 or more locations that represent an *Advertiser* in the VISIT Local Platform.
+- `Campaign`: logical grouping of 1 or more mobile device audiences created in VISIT Local observed over a specific date range.
+- `Visitor`: unique device observed at a target location.
+- `Competitor`: locations that have been co-visited by Visitors of a Project.
+- `Conversion`: an observation of a device from a Campaign audience at a Project location during the Campaign report period.
+## Campaign Segments
+Campaign devices are grouped into four `Pre-Campaign Segments`:
+1. `Customers`: devices observed at a Project location in the Campaign Pre-Period
+2. `Competitors`: devices not observed at a Project location, but were observed at a Competitor location in the Campaign Pre-Period
+3. `NeverVisited`: devices not observed at a Project location nor observed at a Competitor location in the Campaign Pre-Period
+4. `AllConversions`: devices observed at either a Project or Competitor location.
 
-The example API specification used by this repository can be seen hosted at [https://peter-evans.github.io/swagger-github-pages](https://peter-evans.github.io/swagger-github-pages/).
+*The `Campaign Pre-Period` refers to the range of time `n` days leading up to a campaign, where `n` is the number of days since the Campaign start date.*
 
-## Steps to use this template
+Any one of the four `Pre-Campaign-Segments` can be further sub-segmented into  `Campaign Segments`. For example, devices in the Pre-Campaign `Customer` segment can be divided into Campaign Segments for AllConversions, Customers, Competitors, and NeverVisited based on visit observations during the Campaign.
+## Index metric format
+Index value metrics allow a normalized comparison of visitation between two date ranges with fluctuating sample sizes.
 
-1. Click the `Use this template` button above to create a new repository from this template.
+Normalization is achieved by taking observed visit counts for each time period (current and base) as a percentage of total visits.
 
-2. Go to the settings for your repository at `https://github.com/{github-username}/{repository-name}/settings` and enable GitHub Pages.
+The normalized values are compared on an index-100 scale to arrive at the final index value.
 
-    ![Headers](/screenshots/swagger-github-pages.png?raw=true)
-    
-3. Browse to the Swagger documentation at `https://{github-username}.github.io/{repository-name}/`.
+Hypothetical Example:
+
+```$xslt
+
+Base Period: 
+    [2020-08-01 - 2020-08-30] 100 observed visits, 1000 visits in the sample
+Current Period: 
+    [2020-08-01 - 2020-08-30] 110 observed visits, 1200 visits in the sample
+
+Base Normalized = 100 / 1000 = 0.1
+Current Normalized = 110 / 1200 = .092
+
+Index value = (0.092 / 0.1) * 100 = 92
+```
+
+The above example shows a decreasing trend in visits by 8 index points when accounting for fluctuation in sample size.
+[More Info on Index Values](https://bizfluent.com/how-5339534-calculate-index-numbers.html)
+## Limits
+Requests are limited to:
+- 10 requests per minute
+- 1000 results retrieved per request
 
 
-## Steps to manually configure in your own repository
-
-1. Download the latest stable release of the Swagger UI [here](https://github.com/swagger-api/swagger-ui/releases).
-
-2. Extract the contents and copy the "dist" directory to the root of your repository.
-
-3. Move the file "index.html" from the directory "dist" to the root of your repository.
-    ```
-    mv dist/index.html .
-    ```
-    
-4. Copy the YAML specification file for your API to the root of your repository.
-
-5. Edit [index.html](index.html) and change the `url` property to reference your local YAML file. 
-    ```javascript
-        const ui = SwaggerUIBundle({
-            url: "swagger.yaml",
-        ...
-    ```
-    Then fix any references to files in the "dist" directory.
-    ```html
-    ...
-    <link rel="stylesheet" type="text/css" href="dist/swagger-ui.css" >
-    <link rel="icon" type="image/png" href="dist/favicon-32x32.png" sizes="32x32" />
-    <link rel="icon" type="image/png" href="dist/favicon-16x16.png" sizes="16x16" />    
-    ...
-    <script src="dist/swagger-ui-bundle.js"> </script>
-    <script src="dist/swagger-ui-standalone-preset.js"> </script>    
-    ...
-    ```
-    
-6. Go to the settings for your repository at `https://github.com/{github-username}/{repository-name}/settings` and enable GitHub Pages.
-
-    ![Headers](/screenshots/swagger-github-pages.png?raw=true)
-    
-7. Browse to the Swagger documentation at `https://{github-username}.github.io/{repository-name}/`.
-
-   The example API specification used by this repository can be seen hosted at [https://peter-evans.github.io/swagger-github-pages](https://peter-evans.github.io/swagger-github-pages/).
