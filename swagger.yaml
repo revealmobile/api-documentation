@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  description: Generate location-based stats and metrics for digital advertising campaigns. [Request Limits](https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792#limits)
+  description: Generate location-based stats and metrics for digital advertising campaigns. [Request Limits](https://github.com/revealmobile/api-documentation/tree/master#limits)
   version: 0.1.0
   title: Reveal Mobile VISIT API
   contact:
@@ -11,7 +11,7 @@ schemes:
   - https
 externalDocs:
   description: API Documentation
-  url: https://github.com/revealmobile/api-documentation/tree/feature/RVL-4792 #todo update
+  url: https://github.com/revealmobile/api-documentation/tree/master
 paths:
   /session:
     post:
@@ -149,7 +149,7 @@ paths:
       summary: Visitor Count Report
       operationId: countVisitors
       description: |
-        # Get a report of Visitors within a specified date range, to a specified [Project](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#useful-terminology).
+        # Get a report of Visitors within a specified date range, to a specified [Project](https://github.com/revealmobile/report-api-documentation/tree/master#useful-terminology).
 
         ### Optional Filters
         * **Repeat Visitors** - Visited Project locations more than 1x in report period.
@@ -158,7 +158,7 @@ paths:
         ### Output Formats
         * **Count** - An integer representation of unique Visitors matching the specified criteria.
         * **Percentage** - A double representation a percentage metric indicating the ratio of project visitors within a specified proximity of their Home or Work location to total project Visitors within the report period.
-        * **Index** - An double representation of index value comparison in unique Visitors. [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+        * **Index** - An double representation of index value comparison in unique Visitors. [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/master#index-metric-format)
       produces:
         - application/json
       parameters:
@@ -236,7 +236,7 @@ paths:
         * **Count** - An integer representation of the number of Visitors that visited the Project locations and one of the competitors locations within the report timeframe.
         * **Percentage** - A double representation of the ratio of Visitors that visited a competitor location to the total
         Project Visitors in the report timeframe.
-        * **Index** - [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#index-metric-format)
+        * **Index** - [Learn more about index values](https://github.com/revealmobile/report-api-documentation/tree/master#index-metric-format)
       produces:
         - application/json
       parameters:
@@ -421,7 +421,7 @@ paths:
 
         If a `Pre-Campaign Segment` is selected, the count is returned for each `Campaign Segment` that is a subset of the selected `Pre-Campaign-Segment`
 
-        [Learn More About Campaign Segments](https://github.com/revealmobile/report-api-documentation/tree/feature/RVL-4792#campaign-segments)
+        [Learn More About Campaign Segments](https://github.com/revealmobile/report-api-documentation/tree/master#campaign-segments)
 
         ## Output Formats
         * **Count**  - integer representation of the number of conversions in the Campaign report period.
